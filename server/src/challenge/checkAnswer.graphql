@@ -1,0 +1,8 @@
+type CheckAnswerPayload {
+  correct: Boolean!
+  discussionUrl: String
+}
+
+extend type Mutation {
+  checkAnswer(challengeId: String!, answer: String!): CheckAnswerPayload!
+}

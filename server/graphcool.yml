@@ -1,0 +1,141 @@
+# Welcome to Graphcool!
+#
+# This file is the main config file for your Graphcool Service.
+# It's very minimal at this point and uses default values.
+# We've included a hello world function here.
+# Just run `graphcool deploy` to have the first running Graphcool Service.
+#
+# Check out some examples:
+#    https://github.com/graphcool/framework/tree/master/examples
+#
+# Here are the reference docs of this definition format:
+# https://www.graph.cool/docs/reference/service-definition/graphcool.yml-foatho8aip
+#
+# Happy Coding!
+
+
+# In the types.graphql you define your data schema
+types: ./types.graphql
+
+
+functions:
+  # resolver` function to authenticate a User
+  authenticate:
+    type: resolver
+    schema: ./src/user/auth0Authentication.graphql
+    handler:
+      code:
+        src: ./src/user/auth0Authentication.js
+        environment:
+          #AUTH0_DOMAIN: ${env:AUTH0_DOMAIN}
+          #AUTH0_API_IDENTIFIER: ${env:AUTH0_API_IDENTIFIER}
+          AUTH0_DOMAIN: programming-ladder.eu.auth0.com
+          AUTH0_API_IDENTIFIER: programming-ladder/graphcool
+
+  # `resolver` function to check whether a request is authenticated
+  loggedInUser:
+    type: resolver
+    schema: ./src/user/loggedInUser.graphql
+    handler:
+      code: ./src/user/loggedInUser.js
+
+  # `resolver` function to verify an answer to a challenge
+  checkAnswer:
+    type: resolver
+    schema: ./src/challenge/checkAnswer.graphql
+    handler:
+      code: ./src/challenge/checkAnswer.js
+  
+  # `resolver` function to get the answer to a challenge
+  getAnswer:
+    type: resolver
+    schema: ./src/challenge/getAnswer.graphql
+    handler:
+      code: ./src/challenge/getAnswer.js
+
+  # Make sure we don't create dupliate connections between a user and a challenge
+  ensureNoAnswerDuplicates:
+    type: operationBefore
+    handler:
+      code: ./src/challenge/uniqueSolutionConnection.js
+    operation: Solution.create
+  
+  # Validate the data and convert the markdown to HTML before a persist
+  validateChallengeAndConvertMarkdownC:
+    type: operationBefore
+    handler:
+      code: ./src/challenge/validateAndMarkdownToHtml.js
+    operation: Challenge.create
+  validateChallengeAndConvertMarkdownU:
+    type: operationBefore
+    handler:
+      code: ./src/challenge/validateAndMarkdownToHtml.js
+    operation: Challenge.update
+
+# Model/Relation permissions are used to limit the API access
+# To take the burden of thinking about those while development, we
+# preconfigured the wildcard ("*") permission that allows everything
+# Read more here:
+# https://www.graph.cool/docs/reference/auth/authorization/overview-iegoo0heez
+
+#permissions:
+
+permissions:
+  # Admins can always read everything
+  - operation: Challenge.read
+    query: src/permissions/User.graphql:isAdmin
+    authenticated: true
+
+  # We can only see published challenges, and only these fields
+  - operation: Challenge.read
+    query: src/permissions/Challenge.graphql:permitViewChallenges
+    fields:
+      - id
+      - activeFrom
+      - activeTo
+      - title
+      - published
+      # These shouldn't really be here
+      - markup
+      - markdown
+
+  # To view the challenge description,it must be 'active'
+  # Waiting for https://github.com/graphcool/framework/issues/222
+  #- operation: Challenge.read
+  #  fields:
+  #    - markup
+  #    - markdown
+
+  # Only authenticated users who solved the challenge can view the answer
+  - operation: Challenge.read
+    query: src/permissions/Challenge.graphql:permitViewAnswer
+    fields:
+      - answer
+    authenticated: true
+
+  - operation: Challenge.create
+    authenticated: true
+    query: src/permissions/User.graphql:isAdmin
+  - operation: Challenge.update
+    authenticated: true
+    query: src/permissions/User.graphql:isAdmin
+  - operation: Challenge.delete
+    authenticated: true
+    query: src/permissions/User.graphql:isAdmin
+
+  - operation: User.read
+    query: src/permissions/User.graphql:isOwner
+    authenticated: true
+  
+  - operation: Solution.read
+    query: src/permissions/Solution.graphql:permitViewSolutions
+    authenticated: true
+
+
+
+# Your root tokens used for functions to get full access to the API
+# Read more here:
+# https://www.graph.cool/docs/reference/auth/authentication/authentication-tokens-eip7ahqu5o
+# rootTokens:
+#   - mytoken
+
