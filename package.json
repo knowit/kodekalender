@@ -1,0 +1,28 @@
+{
+  "name": "kodekalender",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Alexander Bjerkan <alb@knowit.no>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write \"{client,server}/**/*.js\" --ignore-path .gitignore",
+    "lint:format": "prettier --list-different \"**/*.js\" --ignore-path .gitignore",
+    "lint:eslint": "eslint . --ext .js --max-warnings=0 --ignore-path .gitignore",
+    "lint": "yarn lint:eslint && yarn lint:format"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "babel-eslint": "9.x",
+    "eslint": "5.x",
+    "eslint-config-react-app": "^3.0.5",
+    "eslint-plugin-flowtype": "2.x",
+    "eslint-plugin-import": "2.x",
+    "eslint-plugin-jsx-a11y": "6.x",
+    "eslint-plugin-react": "7.x",
+    "prettier": "^1.15.1"
+  }
+}

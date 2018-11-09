@@ -1,0 +1,11 @@
+# Only allow viewing published challenges
+query permitViewChallenges($node_id: ID!) {
+  SomeChallengeExists(filter: { id: $node_id, published: true })
+}
+
+# We can only view the answer if we're authenticated and we've solved the challenge
+query permitViewAnswer($node_id: ID!, $user_id: ID!) {
+  SomeSolutionExists(
+    filter: { user: { id: $user_id }, challenge: { id: $node_id } }
+  )
+}

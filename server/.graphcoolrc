@@ -1,0 +1,5 @@
+targets:
+  local: local/cja0nyuqa00040164g3ssslkv
+  default: dev
+  prod: shared-eu-west-1/cjagkk5vt3gd9010643np1udd
+  dev: shared-eu-west-1/cjaihk2fe11ir0150o36jz8lj

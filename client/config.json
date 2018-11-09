@@ -1,0 +1,11 @@
+{
+  "AUTH0_CLIENT_ID": "x0SPvAUafbpSgLPLHncBemD6VsHY9m4y",
+  "AUTH0_CLIENT_DOMAIN": "programming-ladder.eu.auth0.com",
+  "AUTH0_AUDIENCE": "programming-ladder/graphcool",
+  "GRAPHQL_ENDPOINT": "https://api.graph.cool/simple/v1/cjagkk5vt3gd9010643np1udd",
+  "CONSOLE_GREETINGS": [
+    "Kodekalender fra Knowit",
+    "Sjekk oss ut her: https://knowit.no/",
+    "Ha en god kodejul! 🎅"
+  ]
+}

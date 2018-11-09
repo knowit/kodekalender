@@ -1,0 +1,49 @@
+enum UserRole {
+  ADMIN
+  USER
+}
+
+type User @model {
+  # Required system field:
+  id: ID! @isUnique # read-only (managed by Graphcool)
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
+  email: String
+  auth0UserId: String @isUnique
+  solutions: [Solution!]! @relation(name: "UserSolutions")
+  role: UserRole! @defaultValue(value: "USER")
+}
+
+type Challenge @model {
+  # required system field:
+  id: ID! @isUnique # read-only (managed by Graphcool)
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
+  title: String!
+  markdown: String!
+  markup: String!
+  answer: String!
+  notes: String
+  activeFrom: DateTime
+  activeTo: DateTime
+  published: Boolean! @defaultValue(value: false)
+  solutions: [Solution!]! @relation(name: "ChallengeSolutions")
+  discussionUrl: String
+}
+
+type Solution @model {
+  id: ID! @isUnique
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime!
+  solved: Boolean!
+  attempts: Int @defaultValue(value: 1)
+  user: User! @relation(name: "UserSolutions")
+  challenge: Challenge! @relation(name: "ChallengeSolutions")
+}
+
+#type Event @model {
+#  id: ID! @isUnique
+#  createdAt: DateTime!
+#  updatedAt: DateTime!
+#  title: String!
+#}

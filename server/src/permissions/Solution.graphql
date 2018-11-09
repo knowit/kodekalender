@@ -1,0 +1,4 @@
+# The user must be the 'owner'
+query permitViewSolutions($node_id: ID!, $user_id: ID!) {
+  SomeSolutionExists(filter: { id: $node_id, user: { id: $user_id } })
+}
