@@ -12,7 +12,7 @@ const Footer = () => (
       <div>
         <img className={styles.knowitLogo} src={knowitLogoSrc} alt="Knowit" />
         <SocialLink
-          href="https://www.facebook.com/knowitnorge/"
+          href="https://www.facebook.com/knowitsolution"
           css={`
             &:hover {
               background: #e2eafd;
