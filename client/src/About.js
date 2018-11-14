@@ -80,15 +80,18 @@ export default () => {
             liste med buzzwords som har gjort det så gøy å lage denne løsningen.
           </p>
           <p>
-            React (med suspoense og hooks!), CSS-in-JS, GraphQL, Apollo,
-            Graphcool, Auth0, Now.sh
+            React (alpha med suspense og hooks!), CSS-in-JS, GraphQL, Apollo,
+            Graphcool, Auth0, Now.sh.
           </p>
           <p>
-            Kildekoden ligger (snart) fritt tilgjengelig på{' '}
-            <a href="http://github.com/knowit" title="GitHub">
+            Kildekoden ligger fritt tilgjengelig på{' '}
+            <a
+              href="https://github.com/knowit/kodekalender"
+              title="Kodekalender repo"
+            >
               GitHub
-            </a>{' '}
-            (så fort vi får slettet secrets fra commit-meldingene 🙈).
+            </a>
+            .
           </p>
         </Container>
       </Section>

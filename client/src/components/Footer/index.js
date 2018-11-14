@@ -43,14 +43,14 @@ const Footer = () => (
           <FaMedium aria-label="Medium" />
         </SocialLink>
         <SocialLink
-          href="https://github.com/knowit"
+          href="https://github.com/knowit/kodekalender"
           css={`
             &:hover {
               background: #33333333;
             }
           `}
         >
-          <FaGithub aria-label="GitHub" />
+          <FaGithub aria-label="GitHub repo" />
         </SocialLink>
       </div>
       <div
