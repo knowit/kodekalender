@@ -1,6 +1,6 @@
 import React from 'react';
 import useDocumentTitle from '@rehooks/document-title';
-import { useApolloQuery } from 'react-apollo-hooks';
+import { useQuery } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
 
 import Heading from './components/Heading';
@@ -8,7 +8,7 @@ import Heading from './components/Heading';
 export default () => {
   useDocumentTitle('Kodekalender: Ledertavle');
 
-  const { data, error } = useApolloQuery(ALL_USERS_QUERY);
+  const { data, error } = useQuery(ALL_USERS_QUERY);
 
   return (
     <>

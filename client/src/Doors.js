@@ -3,7 +3,7 @@ import useDocumentTitle from '@rehooks/document-title';
 import { css, cx } from 'react-emotion';
 import { Link } from '@reach/router';
 import gql from 'graphql-tag';
-import { useApolloQuery } from 'react-apollo-hooks';
+import { useQuery } from 'react-apollo-hooks';
 import isAfter from 'date-fns/is_after';
 
 import theme from './style/theme';
@@ -13,7 +13,7 @@ import Container from './components/Container';
 const Doors = () => {
   const currentUser = useContext(UserContext);
 
-  const { data, error } = useApolloQuery(GET_ACTIVE_DOORS, {
+  const { data, error } = useQuery(GET_ACTIVE_DOORS, {
     variables: {
       userId: currentUser ? currentUser.id : null,
     },

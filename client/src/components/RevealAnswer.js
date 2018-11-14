@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useApolloQuery } from 'react-apollo-hooks';
+import { useQuery } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
 
 import theme from '../style/theme';
@@ -22,7 +22,7 @@ export default ({ doorId }) => {
 };
 
 const Answer = ({ doorId }) => {
-  const { data } = useApolloQuery(getAnswer, {
+  const { data } = useQuery(getAnswer, {
     variables: { doorId },
   });
 

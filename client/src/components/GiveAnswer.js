@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useApolloMutation } from 'react-apollo-hooks';
+import { useMutation } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
 
 import Label from './Label';
@@ -11,7 +11,7 @@ export default ({ doorId }) => {
   const isAuthenticated = Boolean(useContext(UserContext));
   const [value, updateValue] = useState('');
 
-  const giveAnswer = useApolloMutation(GIVE_ANSWER_MUTATION, {
+  const giveAnswer = useMutation(GIVE_ANSWER_MUTATION, {
     variables: { doorId, answer: value },
   });
 

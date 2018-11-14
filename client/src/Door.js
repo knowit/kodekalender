@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
-import { useApolloQuery } from 'react-apollo-hooks';
+import { useQuery } from 'react-apollo-hooks';
 import useDocumentTitle from '@rehooks/document-title';
 
 import UserContext from './components/UserContext';
@@ -13,7 +13,7 @@ import Heading from './components/Heading';
 const Door = ({ doorId }) => {
   const user = useContext(UserContext);
 
-  const { data, error } = useApolloQuery(GET_DOOR, {
+  const { data, error } = useQuery(GET_DOOR, {
     variables: { id: doorId, userId: user ? user.id : null },
   });
 

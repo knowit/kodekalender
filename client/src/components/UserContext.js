@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { useApolloQuery } from 'react-apollo-hooks';
+import { useQuery } from 'react-apollo-hooks';
 import { useAuthenticated } from '../auth';
 
 const UserContext = React.createContext(null);
@@ -17,7 +17,7 @@ const UserContextProvider = ({ children }) => {
 };
 
 const UserProviderGql = ({ children }) => {
-  const { data } = useApolloQuery(CURRENT_USER_QUERY);
+  const { data } = useQuery(CURRENT_USER_QUERY);
 
   return (
     <UserContext.Provider value={data ? data.loggedInUser : null}>
