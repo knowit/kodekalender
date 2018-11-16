@@ -121,9 +121,16 @@ permissions:
     authenticated: true
     query: src/permissions/User.graphql:isAdmin
 
+  # Admins can access everything, users can access their own user
   - operation: User.read
     query: src/permissions/User.graphql:isOwner
     authenticated: true
+
+  # Public user fields
+  - operation: User.read
+    fields:
+      - nickname
+      - picture
 
   - operation: Solution.read
     query: src/permissions/Solution.graphql:permitViewSolutions
