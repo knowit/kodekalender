@@ -38,6 +38,7 @@
     "@babel/preset-react": "7.0.0",
     "babel-plugin-emotion": "9.2.11",
     "babel-plugin-inline-react-svg": "1.0.1",
-    "parcel-bundler": "1.10.3"
+    "parcel-bundler": "1.10.3",
+    "react-hot-loader": "4.3.12"
   }
 }

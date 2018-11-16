@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { ApolloProvider } from 'react-apollo-hooks';
 import { Router } from '@reach/router';
+import { hot, setConfig } from 'react-hot-loader';
 
 import { CONSOLE_GREETINGS } from '../config.json';
 import apolloClient from './apolloClient';
@@ -18,7 +19,7 @@ const Doors = lazy(() => import('./Doors'));
 const Door = lazy(() => import('./Door'));
 const Leaderboard = lazy(() => import('./Leaderboard'));
 
-export default () => {
+const App = () => {
   return (
     <Suspense fallback={<Spinner />}>
       <ApolloProvider client={apolloClient}>
@@ -43,3 +44,7 @@ export default () => {
 };
 
 CONSOLE_GREETINGS.forEach(msg => console.log(msg));
+
+// Fix for hot reloading with hooks. See https://twitter.com/jlengstorf/status/1058170397806407680
+setConfig({ pureSFC: true });
+export default hot(module)(App);
