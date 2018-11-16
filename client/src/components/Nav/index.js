@@ -93,7 +93,8 @@ const styles = {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 30px 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
     font-size: 12px;
 
     ${media.mobile`
