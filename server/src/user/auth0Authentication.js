@@ -35,7 +35,7 @@ const verifyToken = token =>
           algorithms: ['RS256'],
           ignoreExpiration: false,
           issuer: `https://${process.env.AUTH0_DOMAIN}/`,
-          audience: `${process.env.AUTH0_CLIENT_ID}`,
+          audience: process.env.AUTH0_CLIENT_ID,
         },
         (err, decoded) => {
           if (err) return reject(err);
@@ -61,53 +61,51 @@ const getGraphcoolUser = (auth0UserId, api) =>
     .then(queryResult => queryResult.User);
 
 //Creates a new User record.
-const createGraphCoolUser = (auth0UserId, email, api) =>
+const createGraphCoolUser = (auth0UserId, nickname, email, picture, api) =>
   api
     .request(
       `
-        mutation createUser($auth0UserId: String!, $email: String) {
+        mutation createUser($auth0UserId: String!, $nickname: String!, $email: String!, $picture: String!) {
           createUser(
             auth0UserId: $auth0UserId
+            nickname: $nickname
             email: $email
+            picture: $picture
           ){
             id
           }
         }
       `,
-      { auth0UserId, email },
+      { auth0UserId, nickname, picture, email },
     )
     .then(queryResult => queryResult.createUser);
 
-const fetchAuth0Email = accessToken =>
-  fetch(
-    `https://${process.env.AUTH0_DOMAIN}/userinfo?access_token=${accessToken}`,
-  )
-    .then(response => response.json())
-    .then(json => json.email);
-
 export default async event => {
-  try {
-    if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_API_IDENTIFIER) {
-      throw new Error(
-        'Missing AUTH0_DOMAIN or AUTH0_API_IDENTIFIER environment variable',
-      );
-    }
-    const { accessToken } = event.data;
+  if (!process.env.AUTH0_DOMAIN) {
+    throw new Error('Missing AUTH0_DOMAIN environment variable');
+  }
+  if (!process.env.AUTH0_CLIENT_ID) {
+    throw new Error('Missing AUTH0_CLIENT_ID environment variable');
+  }
 
-    const decodedToken = await verifyToken(accessToken);
+  try {
+    const { idToken } = event.data;
+
+    const decodedToken = await verifyToken(idToken);
 
     const graphcool = fromEvent(event);
     const api = graphcool.api('simple/v1');
 
     let graphCoolUser = await getGraphcoolUser(decodedToken.sub, api);
     //If the user doesn't exist, a new record is created.
-    if (graphCoolUser === null) {
-      // fetch email if scope includes it
-      let email = null;
-      if (decodedToken.scope.includes('email')) {
-        email = await fetchAuth0Email(accessToken);
-      }
-      graphCoolUser = await createGraphCoolUser(decodedToken.sub, email, api);
+    if (graphCoolUser == null) {
+      graphCoolUser = await createGraphCoolUser(
+        decodedToken.sub,
+        decodedToken.nickname,
+        decodedToken.email,
+        decodedToken.picture,
+        api,
+      );
     }
 
     // custom exp does not work yet, see https://github.com/graphcool/graphcool-lib/issues/19

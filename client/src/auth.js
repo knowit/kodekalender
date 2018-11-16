@@ -9,11 +9,10 @@ const STORAGE_KEY = 'access_token';
 
 class Auth {
   auth0 = new auth0.WebAuth({
-    audience: config.AUTH0_AUDIENCE,
     domain: config.AUTH0_CLIENT_DOMAIN,
     clientID: config.AUTH0_CLIENT_ID,
     redirectUri: `${window.location.origin}/auth/signed-in`,
-    responseType: 'token',
+    responseType: 'id_token',
     scope: 'openid profile email',
   });
 
@@ -23,13 +22,13 @@ class Auth {
     return new Promise((resolve, reject) => {
       // wow.. callbacks in 2018 :|
       this.auth0.parseHash(async (err, authResult) => {
-        if (err || !authResult.accessToken) {
+        if (err || !authResult.idToken) {
           reject(err);
         }
 
         const { data, error } = await apolloClient.mutate({
           mutation: AUTHENTICATE_USER,
-          variables: { accessToken: authResult.accessToken },
+          variables: { idToken: authResult.idToken },
         });
 
         if (error || !data.authenticateUser.token) {
@@ -62,8 +61,8 @@ class Auth {
 }
 
 const AUTHENTICATE_USER = gql`
-  mutation($accessToken: String!) {
-    authenticateUser(accessToken: $accessToken) {
+  mutation($idToken: String!) {
+    authenticateUser(idToken: $idToken) {
       id
       token
     }

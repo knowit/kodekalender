@@ -13,10 +13,8 @@
 #
 # Happy Coding!
 
-
 # In the types.graphql you define your data schema
 types: ./types.graphql
-
 
 functions:
   # resolver` function to authenticate a User
@@ -28,9 +26,9 @@ functions:
         src: ./src/user/auth0Authentication.js
         environment:
           #AUTH0_DOMAIN: ${env:AUTH0_DOMAIN}
-          #AUTH0_API_IDENTIFIER: ${env:AUTH0_API_IDENTIFIER}
+          #AUTH0_CLIENT_ID: ${env:AUTH0_API_IDENTIFIER}
           AUTH0_DOMAIN: programming-ladder.eu.auth0.com
-          AUTH0_API_IDENTIFIER: programming-ladder/graphcool
+          AUTH0_CLIENT_ID: x0SPvAUafbpSgLPLHncBemD6VsHY9m4y
 
   # `resolver` function to check whether a request is authenticated
   loggedInUser:
@@ -45,7 +43,7 @@ functions:
     schema: ./src/challenge/checkAnswer.graphql
     handler:
       code: ./src/challenge/checkAnswer.js
-  
+
   # `resolver` function to get the answer to a challenge
   getAnswer:
     type: resolver
@@ -59,7 +57,7 @@ functions:
     handler:
       code: ./src/challenge/uniqueSolutionConnection.js
     operation: Solution.create
-  
+
   # Validate the data and convert the markdown to HTML before a persist
   validateChallengeAndConvertMarkdownC:
     type: operationBefore
@@ -126,12 +124,10 @@ permissions:
   - operation: User.read
     query: src/permissions/User.graphql:isOwner
     authenticated: true
-  
+
   - operation: Solution.read
     query: src/permissions/Solution.graphql:permitViewSolutions
     authenticated: true
-
-
 
 # Your root tokens used for functions to get full access to the API
 # Read more here:
