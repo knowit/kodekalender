@@ -1,8 +1,0 @@
-type GetAnswerPayload {
-  answer: String
-  discussionUrl: String
-}
-
-extend type Query {
-  getAnswer(challengeId: ID!): GetAnswerPayload!
-}

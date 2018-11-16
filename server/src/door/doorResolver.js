@@ -1,13 +1,9 @@
 const fromEvent = require('graphcool-lib').fromEvent;
 
 /**
- * Check if we are able to retrieve the answer
+ * Check if we are able to retrieve view the answer
  */
-function canRetrieveAnswer(challenge) {
-  if (!challenge.published) {
-    return false;
-  }
-
+function userCanViewAnswer(challenge) {
   // If the user has already solved it
   if (challenge._solutionsMeta.count > 0) {
     return true;
@@ -29,13 +25,16 @@ function canRetrieveAnswer(challenge) {
 async function getChallengeWithCount(api, challengeId, userId) {
   const queryResult = await api.request(
     `
-        query getChallenge($challengeId: ID!, $userId: ID!){
+        query getChallenge($challengeId: ID!, $userId: ID){
           Challenge(id: $challengeId){
             id
             answer
+            activeFrom
             activeTo
             published
             discussionUrl
+            markup
+            title
             _solutionsMeta(filter: {
               user: {id: $userId}
               solved: true
@@ -53,42 +52,39 @@ async function getChallengeWithCount(api, challengeId, userId) {
 
 export default async event => {
   try {
-    const { challengeId } = event.data;
+    const { id } = event.data;
     // TODO: Check if this can be trusted
     // Maybe check if auth.typeName === 'User' ?
-    const userId = event.context.auth.nodeId;
-
-    if (!userId) {
-      return {
-        error: 'Insufficient Permissions Error',
-      };
-    }
+    const userId = event.context.auth ? event.context.auth.nodeId : null;
 
     const graphcool = fromEvent(event);
     const api = graphcool.api('simple/v1');
 
-    const challengeAndCount = await getChallengeWithCount(
-      api,
-      challengeId,
-      userId,
-    );
+    const challenge = await getChallengeWithCount(api, id, userId);
 
-    if (!canRetrieveAnswer(challengeAndCount)) {
-      return { error: 'Insufficient Permissions Error' };
+    // If the challenge doesn't exist, isn't published, or isn't active yet we return null
+    if (
+      !challenge ||
+      !challenge.published ||
+      (challenge.activeFrom && Date.now() < new Date(challenge.activeFrom))
+    ) {
+      return { data: null };
     }
 
-    if (challengeAndCount.answer) {
-      return {
-        data: {
-          answer: challengeAndCount.answer,
-          discussionUrl: challengeAndCount.discussionUrl,
-        },
-      };
-    }
+    const canViewAnswer = userCanViewAnswer(challenge);
+
+    const door = {
+      id: challenge.id,
+      markup: challenge.markup,
+      answer: userId && canViewAnswer ? challenge.answer : null,
+      discussionUrl: userId && canViewAnswer ? challenge.discussionUrl : null,
+      title: challenge.title,
+      activeTo: challenge.activeTo,
+      solved: challenge._solutionsMeta.count > 0,
+    };
+
     return {
-      data: {
-        answer: challengeAndCount.answer,
-      },
+      data: door,
     };
   } catch (err) {
     console.log(err);

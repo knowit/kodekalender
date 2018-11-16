@@ -45,11 +45,11 @@ functions:
       code: ./src/challenge/checkAnswer.js
 
   # `resolver` function to get the answer to a challenge
-  getAnswer:
+  door:
     type: resolver
-    schema: ./src/challenge/getAnswer.graphql
+    schema: ./src/door/door.graphql
     handler:
-      code: ./src/challenge/getAnswer.js
+      code: ./src/door/doorResolver.js
 
   # Make sure we don't create dupliate connections between a user and a challenge
   ensureNoAnswerDuplicates:
@@ -85,31 +85,14 @@ permissions:
     authenticated: true
 
   # We can only see published challenges, and only these fields
+  # For everything else, we use the custom query Door
   - operation: Challenge.read
     query: src/permissions/Challenge.graphql:permitViewChallenges
     fields:
       - id
       - activeFrom
       - activeTo
-      - title
       - published
-      # These shouldn't really be here
-      - markup
-      - markdown
-
-  # To view the challenge description,it must be 'active'
-  # Waiting for https://github.com/graphcool/framework/issues/222
-  #- operation: Challenge.read
-  #  fields:
-  #    - markup
-  #    - markdown
-
-  # Only authenticated users who solved the challenge can view the answer
-  - operation: Challenge.read
-    query: src/permissions/Challenge.graphql:permitViewAnswer
-    fields:
-      - answer
-    authenticated: true
 
   - operation: Challenge.create
     authenticated: true
