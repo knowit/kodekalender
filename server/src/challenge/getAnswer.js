@@ -38,6 +38,7 @@ async function getChallengeWithCount(api, challengeId, userId) {
             discussionUrl
             _solutionsMeta(filter: {
               user: {id: $userId}
+              solved: true
             }) {
               count
             }
