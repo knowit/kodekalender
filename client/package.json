@@ -8,10 +8,8 @@
   "private": true,
   "scripts": {
     "build": "parcel build ./src/index.html",
+    "now-build": "yarn build --public-url ./assets/",
     "start": "parcel ./src/index.html --port 3000"
-  },
-  "now": {
-    "name": "julekalender"
   },
   "dependencies": {
     "@reach/router": "1.2.1",
