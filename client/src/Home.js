@@ -1,55 +1,51 @@
 import React from 'react';
-import { css } from 'react-emotion';
 import useDocumentTitle from '@rehooks/document-title';
 
 import theme from './style/theme';
 import Container from './components/Container';
+import TextAlign from './components/TextAlign';
 import Snowfall from './components/Snowfall';
+import Heading from './components/Heading';
+import media from './style/media';
 
 export default () => {
   useDocumentTitle('Kodekalender');
 
   return (
-    <>
-      <Container>
-        <h1>Kodekalender</h1>
-        <p>Løs lukene og bli med i trekningen av en telefon!</p>
-        <p>En ny luke åpnes hver dag frem til jul.</p>
+    <TextAlign>
+      <Container css={{ minHeight: '40vh' }}>
+        <H1>
+          Kodekalender{' '}
+          <small css={{ display: 'block', fontSize: '0.5em' }}>by knowit</small>
+        </H1>
+        <P>
+          Løs lukene og bli med i trekningen av en telefon eller et nettbrett.
+        </P>
+        <P>En ny luke åpnes hver dag frem til jul.</P>
       </Container>
 
       <Snowfall>
-        <Container>
-          <h3>Ønsker du å bidra?</h3>
-          <p>
-            I år har vi åpnet opp for at publikum kan sende inn forslag til
-            oppgaver. Sitter du inne med en skikkelig nøtt i magen?
-          </p>
-          <p>
-            Blir nøtten brukt krediteres du på oppgavesiden (om du vil), og du
-            får et <strong>gavekort fra Amazon</strong>!
-          </p>
-          <a
-            className={linkStyle}
-            href="https://docs.google.com/forms/d/e/1FAIpQLSfq-fxO1-Bh-B4gLYeaevOdwPwunCkvCw5v42m7w_Ca6k9RcQ/viewform?usp=sf_link"
-          >
-            Send den inn, da vel!
-          </a>
+        <Container css={{ padding: '80px 0' }}>
+          <Heading size="2">Episode 2018 - Return of the Leaderboard</Heading>
+          <P>Løs lukene hver dag for å klatre til toppen!</P>
         </Container>
       </Snowfall>
-    </>
+    </TextAlign>
   );
 };
 
-const linkStyle = css`
-  margintop: 40px;
-  display: inline-block;
-  border: 2px solid ${theme.colors.grayLight};
-  color: ${theme.colors.grayLight};
-  border-radius: 50px;
-  font-size: 20px;
-  padding: 5px 15px;
-  transition: all 0.15s ease-out;
-  &:hover {
-    transform: translateY(-1px);
-  }
-`;
+const H1 = props => (
+  <h1
+    css={`
+      font-family: ${theme.fontFamilyCode};
+      font-size: 60px;
+      text-transform: uppercase;
+      ${media.mobile`
+        font-size: 42px;
+      `};
+    `}
+    {...props}
+  />
+);
+
+const P = props => <p css={{ fontSize: '1.2rem' }} {...props} />;

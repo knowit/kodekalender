@@ -14,7 +14,7 @@ const Section = props => (
         line-height: 2;
         margin-top: 1.5rem;
       }
-      h3 {
+      h2 {
         font-size: 32px;
         line-height: 1.6;
         margin-top: 0;
@@ -36,7 +36,7 @@ export default () => {
     <>
       <Section style={{ paddingTop: '50px' }}>
         <Container>
-          <h3>Om Kodekalenderen</h3>
+          <h2>Om Kodekalenderen</h2>
           <Row
             css={`
               ${media.mobile`display: block`};
@@ -74,7 +74,7 @@ export default () => {
 
       <Section>
         <Container>
-          <h3>Stack</h3>
+          <h2>Stack</h2>
           <p>
             Kodekalenderen er skikkelig <em>over-engineered</em>. Her er en
             liste med buzzwords som har gjort det så gøy å lage denne løsningen.
@@ -98,7 +98,7 @@ export default () => {
 
       <Section>
         <Container>
-          <h3>Om Knowit</h3>
+          <h2>Om Knowit</h2>
           <p>
             Knowit-kulturen er bygget på åpenhet, entreprenørskap, høy
             kompetanse og en vilje til stadig å utvikles - og en god dose
@@ -115,7 +115,7 @@ export default () => {
       </Section>
       <Section>
         <Container>
-          <h3>Jobbe i Knowit?</h3>
+          <h2>Jobbe i Knowit?</h2>
           <p>
             Ønsker du å vite mer om Knowit? Ta gjerne kontakt for en uformell
             prat med vår rekrutteringsansvarlig, Sigmund Marius Nilssen, på{' '}
