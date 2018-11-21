@@ -13,7 +13,7 @@ class Auth {
     clientID: config.AUTH0_CLIENT_ID,
     redirectUri: `${window.location.origin}/auth/signed-in`,
     responseType: 'id_token',
-    scope: 'openid profile email',
+    scope: 'openid profile',
   });
 
   listeners = new Set();
