@@ -8,7 +8,6 @@ type User @model {
   id: ID! @isUnique # read-only (managed by Graphcool)
   createdAt: DateTime! # read-only (managed by Graphcool)
   updatedAt: DateTime! # read-only (managed by Graphcool)
-  email: String!
   auth0UserId: String! @isUnique
   nickname: String! # Github username
   picture: String! # Github profile picture
@@ -42,10 +41,3 @@ type Solution @model {
   user: User! @relation(name: "UserSolutions")
   challenge: Challenge! @relation(name: "ChallengeSolutions")
 }
-
-#type Event @model {
-#  id: ID! @isUnique
-#  createdAt: DateTime!
-#  updatedAt: DateTime!
-#  title: String!
-#}

@@ -61,22 +61,21 @@ const getGraphcoolUser = (auth0UserId, api) =>
     .then(queryResult => queryResult.User);
 
 //Creates a new User record.
-const createGraphCoolUser = (auth0UserId, nickname, email, picture, api) =>
+const createGraphCoolUser = (auth0UserId, nickname, picture, api) =>
   api
     .request(
       `
-        mutation createUser($auth0UserId: String!, $nickname: String!, $email: String!, $picture: String!) {
+        mutation createUser($auth0UserId: String!, $nickname: String!, $picture: String!) {
           createUser(
             auth0UserId: $auth0UserId
             nickname: $nickname
-            email: $email
             picture: $picture
           ){
             id
           }
         }
       `,
-      { auth0UserId, nickname, picture, email },
+      { auth0UserId, nickname, picture },
     )
     .then(queryResult => queryResult.createUser);
 
@@ -102,7 +101,6 @@ export default async event => {
       graphCoolUser = await createGraphCoolUser(
         decodedToken.sub,
         decodedToken.nickname,
-        decodedToken.email,
         decodedToken.picture,
         api,
       );
