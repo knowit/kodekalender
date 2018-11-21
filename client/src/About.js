@@ -107,7 +107,7 @@ export default () => {
             og Trondheim.
           </p>
           <p>
-            <a href="https://www.finn.no/job/fulltime/ad.html?finnkode=108484135&fks=108484135">
+            <a href="https://www.knowit.no/karriere/systemutvikler-backend-mobil-ogeller-frontend/">
               Lyst på jobb?
             </a>
           </p>
@@ -120,13 +120,6 @@ export default () => {
             Ønsker du å vite mer om Knowit? Ta gjerne kontakt for en uformell
             prat med vår rekrutteringsansvarlig, Sigmund Marius Nilssen, på{' '}
             <a href="mailto:smn@knowit.no">smn@knowit.no</a>.
-          </p>
-          <p>
-            Du kan lese mer, se videoer om oss eller søke jobb på{' '}
-            <a href="http://www.knowit.no/karriere" title="Knowit karriere">
-              knowit.no/karriere
-            </a>
-            .
           </p>
         </Container>
       </Section>
