@@ -30,7 +30,7 @@ export default () => {
           <tbody className={styles.body}>
             {groupBySolveCount(data.allUsers).map(([doorsSolved, users]) => {
               const rows = (
-                <>
+                <React.Fragment key={doorsSolved}>
                   <tr>
                     <th colSpan="2">{doorsSolved} luker</th>
                   </tr>
@@ -44,7 +44,7 @@ export default () => {
                       </td>
                     </tr>
                   ))}
-                </>
+                </React.Fragment>
               );
               userRank = userRank + users.length;
               return rows;
