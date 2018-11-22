@@ -24,9 +24,10 @@ export default event => {
       };
     }
 
-    const markup = marked(event.data.markdown);
-
-    event.data.markup = markup;
+    if (event.data.markdown) {
+      const markup = marked(event.data.markdown);
+      event.data.markup = markup;
+    }
 
     return event;
   } catch (err) {
