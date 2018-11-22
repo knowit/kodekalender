@@ -81,11 +81,12 @@ function groupBySolveCount(users) {
   return tuples.sort((a, b) => b[0] - a[0]);
 }
 
+// We only get users that have solved at least one door
 const LEADERBOARD_QUERY = gql`
   query leaderboard {
     allUsers(filter: { solutions_some: { solved: true } }) {
       nickname
-      _solutionsMeta {
+      _solutionsMeta(filter: { solved: true }) {
         count
       }
     }
