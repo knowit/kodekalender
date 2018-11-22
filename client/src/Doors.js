@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import useDocumentTitle from '@rehooks/document-title';
 import { css, cx } from 'react-emotion';
 import { Link } from '@reach/router';
-import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
 import isAfter from 'date-fns/is_after';
 
+import DOORS_QUERY from './gql/DoorsQuery';
 import theme from './style/theme';
 import UserContext from './components/UserContext';
 import Container from './components/Container';
@@ -36,18 +36,6 @@ const Doors = () => {
     </div>
   );
 };
-
-export const DOORS_QUERY = gql`
-  query doors($userId: ID) {
-    allChallenges(filter: { published: true }, orderBy: activeFrom_ASC) {
-      id
-      activeFrom
-      _solutionsMeta(filter: { solved: true, user: { id: $userId } }) {
-        count
-      }
-    }
-  }
-`;
 
 /**
  *  Pad with extra days so we always show 24 in the calendar

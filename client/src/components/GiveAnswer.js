@@ -10,6 +10,8 @@ import UserContext from './UserContext';
 import Button from './Button';
 import Input from './Input';
 import DiscussionLink from './DiscussionLink';
+import LEADERBOARD_QUERY from '../gql/LeaderboardQuery';
+import DOORS_QUERY from '../gql/DoorsQuery';
 
 const initialState = { discussionUrl: null, status: null };
 
@@ -31,6 +33,15 @@ export default ({ doorId }) => {
 
   const giveAnswer = useMutation(GIVE_ANSWER_MUTATION, {
     variables: { doorId, answer: value },
+    // We need to update the following queries if we answered correctly
+    // Do this instead of updating the cache ourselves
+    refetchQueries: ({ data }) =>
+      data && data.checkAnswer && data.checkAnswer.correct
+        ? [
+            { query: LEADERBOARD_QUERY },
+            { query: DOORS_QUERY, variables: { userId: user.id } },
+          ]
+        : [],
   });
 
   async function handleSubmit(event) {
@@ -46,7 +57,6 @@ export default ({ doorId }) => {
         type: 'CORRECT',
         discussionUrl: data.checkAnswer.discussionUrl,
       });
-      updateStatus('CORRECT');
     } else {
       dispatch({ type: 'WRONG' });
     }

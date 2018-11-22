@@ -1,10 +1,10 @@
 import React from 'react';
 import useDocumentTitle from '@rehooks/document-title';
 import { useQuery } from 'react-apollo-hooks';
-import gql from 'graphql-tag';
 import { css } from 'react-emotion';
 import theme from './style/theme';
 
+import LEADERBOARD_QUERY from './gql/LeaderboardQuery';
 import Container from './components/Container';
 import Heading from './components/Heading';
 
@@ -80,18 +80,6 @@ function groupBySolveCount(users) {
   // Finally sort the tuples by the solve count
   return tuples.sort((a, b) => b[0] - a[0]);
 }
-
-// We only get users that have solved at least one door
-const LEADERBOARD_QUERY = gql`
-  query leaderboard {
-    allUsers(filter: { solutions_some: { solved: true } }) {
-      nickname
-      _solutionsMeta(filter: { solved: true }) {
-        count
-      }
-    }
-  }
-`;
 
 const styles = {
   tableWrapper: css`
