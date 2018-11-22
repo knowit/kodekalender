@@ -24,7 +24,7 @@ const Door = ({ doorId }) => {
   const isSolved = data.door.solved;
 
   return (
-    <Container>
+    <Container css={{ marginBottom: '50px' }}>
       <Heading>{data.door.title}</Heading>
       <Terminal css={{ marginBottom: '3rem' }}>
         <div dangerouslySetInnerHTML={{ __html: data.door.markup }} />
