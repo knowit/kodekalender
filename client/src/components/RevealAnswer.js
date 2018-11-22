@@ -1,31 +1,27 @@
 import React, { useContext, useState } from 'react';
-import { useQuery } from 'react-apollo-hooks';
-import gql from 'graphql-tag';
 
 import theme from '../style/theme';
 import UserContext from './UserContext';
 import Button from './Button';
 
-export default ({ doorId }) => {
+export default ({ answer }) => {
   const isAuthenticated = Boolean(useContext(UserContext));
   const [reveal, toggleReveal] = useState(false);
 
   if (isAuthenticated && reveal) {
-    return <Answer doorId={doorId} />;
+    return <Answer answer={answer} />;
   }
 
   return (
-    <Button disabled={!isAuthenticated} onClick={() => toggleReveal(true)}>
-      Se løsning
-    </Button>
+    <div css={{ textAlign: 'center' }}>
+      <Button disabled={!isAuthenticated} onClick={() => toggleReveal(true)}>
+        Se løsning
+      </Button>
+    </div>
   );
 };
 
-const Answer = ({ doorId }) => {
-  const { data } = useQuery(getAnswer, {
-    variables: { doorId },
-  });
-
+const Answer = ({ answer }) => {
   return (
     <p>
       Svaret er...{' '}
@@ -34,17 +30,8 @@ const Answer = ({ doorId }) => {
           font-family: ${theme.fontFamilyCode};
         `}
       >
-        {data.getAnswer.answer}
+        {answer}
       </span>
     </p>
   );
 };
-
-const getAnswer = gql`
-  query getAnswer($doorId: ID!) {
-    getAnswer(challengeId: $doorId) {
-      answer
-      discussionUrl
-    }
-  }
-`;

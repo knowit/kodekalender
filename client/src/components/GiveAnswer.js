@@ -1,25 +1,58 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useReducer } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
 
+import LaughingSanta from './LaughingSanta';
+import DroppingSnowman from './DroppingSnowman';
 import Label from './Label';
+import TextAlign from './TextAlign';
 import UserContext from './UserContext';
 import Button from './Button';
 import Input from './Input';
+import DiscussionLink from './DiscussionLink';
+
+const initialState = { discussionUrl: null, status: null };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'CORRECT':
+      return { status: action.type, discussionUrl: action.discussionUrl };
+    default:
+      return { status: action.type };
+  }
+}
 
 export default ({ doorId }) => {
-  const isAuthenticated = Boolean(useContext(UserContext));
+  const user = useContext(UserContext);
+  const isAuthenticated = Boolean(user);
+
   const [value, updateValue] = useState('');
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const giveAnswer = useMutation(GIVE_ANSWER_MUTATION, {
     variables: { doorId, answer: value },
   });
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const result = giveAnswer();
-    console.log(result);
+    dispatch({ type: 'CHECKING' });
+
+    const { data, error } = await giveAnswer();
+
+    if (error) {
+      dispatch({ type: 'ERROR' });
+    } else if (data.checkAnswer.correct) {
+      dispatch({
+        type: 'CORRECT',
+        discussionUrl: data.checkAnswer.discussionUrl,
+      });
+      updateStatus('CORRECT');
+    } else {
+      dispatch({ type: 'WRONG' });
+    }
   }
+
+  const status = state.status;
 
   return (
     <form>
@@ -30,17 +63,28 @@ export default ({ doorId }) => {
         style={{ marginBottom: '15px' }}
         placeholder="Svar"
         required
+        readOnly={status === 'CORRECT'}
         onChange={event => updateValue(event.target.value)}
       />
-      <div css={{ textAlign: 'center' }}>
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={!isAuthenticated || value.trim() === ''}
-        >
-          Avgi svar
-        </Button>
-      </div>
+      <TextAlign>
+        {status === 'CORRECT' ? (
+          <DiscussionLink url={state.discussionUrl} />
+        ) : (
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={!isAuthenticated || value.trim() === ''}
+          >
+            Avgi svar
+          </Button>
+        )}
+        <div css={{ marginTop: '2rem', fontSize: '1.2rem' }}>
+          {status === 'ERROR' && <span>Noe gikk galt :/</span>}
+          {status === 'CHECKING' && <span>Sjekker...</span>}
+          {status === 'WRONG' && <WrongAnswer />}
+          {status === 'CORRECT' && <CorrectAnswer />}
+        </div>
+      </TextAlign>
     </form>
   );
 };
@@ -53,3 +97,17 @@ const GIVE_ANSWER_MUTATION = gql`
     }
   }
 `;
+
+const WrongAnswer = () => (
+  <>
+    <LaughingSanta />
+    <p>Myke pakker gitt. Svaret er feil.</p>
+  </>
+);
+
+const CorrectAnswer = () => (
+  <>
+    <DroppingSnowman />
+    <p>Åh herlige julegrøt, det var riktig!</p>
+  </>
+);

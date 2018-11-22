@@ -1,0 +1,16 @@
+type Door {
+  id: ID!
+  title: String!
+  markup: String!
+  # Only if the user is authenticated and it is solved or no longer active
+  answer: String
+  # Only if the user is authenticated and it is solved or no longer active
+  discussionUrl: String
+  activeTo: DateTime
+  # If the user has solved it
+  solved: Boolean!
+}
+
+extend type Query {
+  Door(id: ID!): Door
+}

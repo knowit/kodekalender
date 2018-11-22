@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'react-emotion';
+import { css, cx } from 'react-emotion';
 import PropTypes from 'prop-types';
 
 import theme from '../style/theme';
@@ -11,8 +11,9 @@ class Terminal extends React.Component {
   };
 
   render() {
+    const { className } = this.props;
     return (
-      <div className={styles.window}>
+      <div className={cx(styles.window, className)}>
         <div className={styles.titlebar}>
           <div className={styles.windowtitle}>{this.props.windowTitle}</div>
           <span
@@ -36,6 +37,7 @@ class Terminal extends React.Component {
 
 Terminal.propTypes = {
   windowTitle: PropTypes.string,
+  className: PropTypes.string,
 };
 
 const styles = {

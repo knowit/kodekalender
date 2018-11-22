@@ -11,15 +11,15 @@ import UserContext from './components/UserContext';
 import Container from './components/Container';
 
 const Doors = () => {
+  useDocumentTitle('Kodekalender: Luker');
+
   const currentUser = useContext(UserContext);
 
-  const { data, error } = useQuery(GET_ACTIVE_DOORS, {
+  const { data, error } = useQuery(DOORS_QUERY, {
     variables: {
       userId: currentUser ? currentUser.id : null,
     },
   });
-
-  useDocumentTitle('Kodekalender: Luker');
 
   // Filter away the doors that aren't active yet
   // Ideally these shouldn't be retrieved at all, but whatever
@@ -37,11 +37,10 @@ const Doors = () => {
   );
 };
 
-const GET_ACTIVE_DOORS = gql`
-  query($userId: ID) {
+export const DOORS_QUERY = gql`
+  query doors($userId: ID) {
     allChallenges(filter: { published: true }, orderBy: activeFrom_ASC) {
       id
-      title
       activeFrom
       _solutionsMeta(filter: { solved: true, user: { id: $userId } }) {
         count

@@ -9,47 +9,58 @@ import RevealAnswer from './components/RevealAnswer';
 import GiveAnswer from './components/GiveAnswer';
 import Terminal from './components/Terminal';
 import Heading from './components/Heading';
+import DiscussionLink from './components/DiscussionLink';
 
+// TODO: 404 if the door isnt found
 const Door = ({ doorId }) => {
-  const user = useContext(UserContext);
-
   const { data, error } = useQuery(GET_DOOR, {
-    variables: { id: doorId, userId: user ? user.id : null },
+    variables: { id: doorId },
   });
 
   useDocumentTitle(`Kodekalender: ${data.door.title}`);
 
+  const isAuthenticated = Boolean(useContext(UserContext));
   const hasExpired = data.door && new Date(data.door.activeTo) < new Date();
-  const isSolved = data.door && data.door._solutionsMeta.count > 0;
+  const isSolved = data.door.solved;
 
   return (
     <Container>
       <Heading>{data.door.title}</Heading>
-      <Terminal>
+      <Terminal css={{ marginBottom: '3rem' }}>
         <div dangerouslySetInnerHTML={{ __html: data.door.markup }} />
       </Terminal>
-      {(isSolved || hasExpired) && <RevealAnswer doorId={doorId} />}
 
-      {/* , show the answer form */}
-      {!hasExpired && <GiveAnswer doorId={doorId} />}
+      {!isAuthenticated && <AnonMessage hasExpired={hasExpired} />}
+
+      {(isSolved || hasExpired) && <RevealAnswer answer={data.door.answer} />}
+
+      {data.door.discussionUrl && (
+        <DiscussionLink url={data.door.discussionUrl} />
+      )}
+
+      {!hasExpired && !isSolved && <GiveAnswer doorId={doorId} />}
     </Container>
   );
 };
 
+const AnonMessage = ({ hasExpired }) => (
+  <p css={{ fontSize: '1.2rem', margin: '2.5rem 0', textAlign: 'center' }}>
+    {hasExpired
+      ? 'Det er for sent å svare på denne oppgaven. Logg deg inn for å se svaret og diskusjonstråden.'
+      : 'Logg deg inn for å avgi svar.'}
+  </p>
+);
+
 const GET_DOOR = gql`
-  query getDoor($id: ID!, $userId: ID) {
-    door: Challenge(id: $id) {
+  query getDoor($id: ID!) {
+    door: Door(id: $id) {
       id
       title
       markup
-      activeFrom
       activeTo
-      _solutionsMeta(
-        first: 1
-        filter: { solved: true, user: { id: $userId } }
-      ) {
-        count
-      }
+      answer
+      discussionUrl
+      solved
     }
   }
 `;
