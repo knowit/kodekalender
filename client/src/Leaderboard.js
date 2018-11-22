@@ -12,7 +12,9 @@ import Heading from './components/Heading';
 export default () => {
   useDocumentTitle('Kodekalender: Ledertavle');
 
-  const { data, error } = useQuery(LEADERBOARD_QUERY);
+  const { data, error } = useQuery(LEADERBOARD_QUERY, {
+    pollInterval: 60000 * 5, // Refresh every 5 minutes
+  });
 
   let userRank = 1;
 
