@@ -31,10 +31,10 @@ injectGlobal`
   }
 
   #root {
-    min-height: 100%;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    grid-template-columns: 100%;
+    height: 100%;
+    > div {
+      height: 100%;
+    }
   }
 
   a {

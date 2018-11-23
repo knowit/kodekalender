@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import apolloClient from './apolloClient';
 import config from '../config.json';
+import { CURRENT_USER_QUERY } from './components/UserContext';
 
 const STORAGE_KEY = 'access_token';
 
@@ -22,17 +23,31 @@ class Auth {
     return new Promise((resolve, reject) => {
       // wow.. callbacks in 2018 :|
       this.auth0.parseHash(async (err, authResult) => {
-        if (err || !authResult.idToken) {
-          reject(err);
+        if (err || !authResult || !authResult.idToken) {
+          return reject(err || new Error('Unable to get id token'));
         }
 
         const { data, error } = await apolloClient.mutate({
           mutation: AUTHENTICATE_USER,
           variables: { idToken: authResult.idToken },
+          update: (cache, { data: { authenticateUser }, error }) => {
+            // Manually write to the cache
+            // This is really fragile... adding our own typename and stuff. But it speeds things up so much
+            if (!error && authenticateUser && authenticateUser.id)
+              cache.writeQuery({
+                query: CURRENT_USER_QUERY,
+                data: {
+                  loggedInUser: {
+                    id: authenticateUser.id,
+                    __typename: 'LoggedInUserPayload',
+                  },
+                },
+              });
+          },
         });
 
         if (error || !data.authenticateUser.token) {
-          reject(error);
+          return reject(error);
         }
 
         localStorage.setItem(STORAGE_KEY, data.authenticateUser.token);

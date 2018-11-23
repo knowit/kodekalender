@@ -23,25 +23,40 @@ const App = () => {
   return (
     <Suspense fallback={<Spinner />}>
       <ApolloProvider client={apolloClient}>
-        <UserContextProvider>
-          <Nav />
-          <Suspense fallback={<Spinner />} maxDuration={1000}>
-            <Router>
-              <Home path="/" />
-              <About path="about" />
-              <Doors path="doors" />
-              <Door path="doors/:doorId" />
-              <Leaderboard path="leaderboard" />
-              <SignedIn path="auth/signed-in" />
-              <NotFound default />
-            </Router>
-          </Suspense>
-          <Footer />
-        </UserContextProvider>
+        <Router>
+          <SignedIn path="auth/signed-in" />
+          <Layout path="*" />
+        </Router>
       </ApolloProvider>
     </Suspense>
   );
 };
+
+const Layout = () => (
+  <UserContextProvider>
+    <div
+      css={`
+        min-height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        grid-template-columns: 100%;
+      `}
+    >
+      <Nav />
+      <Suspense fallback={<Spinner />} maxDuration={1000}>
+        <Router>
+          <Home path="/" />
+          <About path="about" />
+          <Doors path="doors" />
+          <Door path="doors/:doorId" />
+          <Leaderboard path="leaderboard" />
+          <NotFound default />
+        </Router>
+      </Suspense>
+      <Footer />
+    </div>
+  </UserContextProvider>
+);
 
 CONSOLE_GREETINGS.forEach(msg => console.log(msg));
 
