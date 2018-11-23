@@ -56,12 +56,13 @@ export default () => {
             </div>
             <div>
               <p>
-                Hver luke som løses er et lodd i trekningen av en telefon. Løs
-                så mange luker som mulig for å øke vinnersjansene dine!
+                Hver luke som løses er et lodd i trekningen av en telefon eller
+                et nettbrett. Løs så mange luker som mulig for å øke
+                vinnersjansene dine!
               </p>
               <p>
-                Lukene åpnes klokken 06:00 hver dag, og du har 24 timer på deg
-                til å løse oppgaven.
+                Lukene åpnes klokken 06:00 hver dag, og du har 24 timer på på å
+                løse oppgaven.
               </p>
               <p>
                 Vinneren trekkes på nyåret og vil bli kontaktet. Lykke til og
@@ -101,10 +102,10 @@ export default () => {
           <h2>Om Knowit</h2>
           <p>
             Knowit-kulturen er bygget på åpenhet, entreprenørskap, høy
-            kompetanse og en vilje til stadig å utvikles - og en god dose
-            nerdehumor. Vi er nesten 1900 mennesker fordelt på Norge og Sverige,
-            i Norge finnes vi i Oslo, Bergen, Stavanger, Kristiansand, Arendal
-            og Trondheim.
+            kompetanse, en vilje til stadig å utvikles - og en god dose
+            nerdehumor. Vi er nesten 2200 ansatte fordelt på Norge, Sverige,
+            Danmark, Finland og Tyskland. I Norge finnes vi i Oslo, Bergen,
+            Stavanger, Kristiansand, Arendal og Trondheim.
           </p>
           <p>
             <a href="https://www.knowit.no/karriere/systemutvikler-backend-mobil-ogeller-frontend/">
