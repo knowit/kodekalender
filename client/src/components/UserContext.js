@@ -26,7 +26,7 @@ const UserProviderGql = ({ children }) => {
   );
 };
 
-const CURRENT_USER_QUERY = gql`
+export const CURRENT_USER_QUERY = gql`
   query LoggedInUserQuery {
     loggedInUser {
       id
