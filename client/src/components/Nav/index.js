@@ -32,20 +32,12 @@ const Nav = () => {
           <Link to="/doors">Luker</Link>
           <Link to="/leaderboard">Ledertavle</Link>
           <Link to="/about">Om</Link>
-          {/* <Link to="/better-shelter">
-            Better Shelter <HeartHouse />
-          </Link> */}
         </div>
         <div className={cx(rightStyle, { [mobileHide]: !expanded })}>
           {currentUser ? (
-            <>
-              {currentUser.role === 'ADMIN' && (
-                <Link to="/admin/challenges">Admin</Link>
-              )}
-              <a role="button" tabIndex="0" onClick={auth.logout}>
-                Logg ut
-              </a>
-            </>
+            <a role="button" tabIndex="0" onClick={auth.logout}>
+              Logg ut
+            </a>
           ) : (
             <a role="button" onClick={auth.login} tabIndex="0">
               Logg inn

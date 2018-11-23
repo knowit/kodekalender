@@ -30,7 +30,6 @@ const CURRENT_USER_QUERY = gql`
   query LoggedInUserQuery {
     loggedInUser {
       id
-      role
     }
   }
 `;
