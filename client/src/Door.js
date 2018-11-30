@@ -11,11 +11,15 @@ import Terminal from './components/Terminal';
 import Heading from './components/Heading';
 import DiscussionLink from './components/DiscussionLink';
 
-// TODO: 404 if the door isnt found
-const Door = ({ doorId }) => {
+const Door = ({ doorId, navigate }) => {
   const { data, error } = useQuery(GET_DOOR, {
     variables: { id: doorId },
   });
+
+  if (error || !data.door) {
+    navigate('/404');
+    return null;
+  }
 
   useDocumentTitle(`Kodekalender: ${data.door.title}`);
 
