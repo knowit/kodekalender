@@ -24,7 +24,6 @@ type Challenge @model {
   markdown: String!
   markup: String!
   answer: String!
-  notes: String
   activeFrom: DateTime
   activeTo: DateTime
   published: Boolean! @defaultValue(value: false)
