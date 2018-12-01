@@ -9,12 +9,17 @@ import Container from './components/Container';
 import Heading from './components/Heading';
 
 // TODO: Show user's avatar in table?
-export default () => {
+export default ({ navigate }) => {
   useDocumentTitle('Kodekalender: Ledertavle');
 
   const { data, error } = useQuery(LEADERBOARD_QUERY, {
     pollInterval: 60000 * 5, // Refresh every 5 minutes
   });
+
+  if (error || !data.allUsers) {
+    navigate('/error');
+    return null;
+  }
 
   let userRank = 1;
 

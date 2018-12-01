@@ -10,7 +10,7 @@ import theme from './style/theme';
 import UserContext from './components/UserContext';
 import Container from './components/Container';
 
-const Doors = () => {
+const Doors = ({ navigate }) => {
   useDocumentTitle('Kodekalender: Luker');
 
   const currentUser = useContext(UserContext);
@@ -20,6 +20,11 @@ const Doors = () => {
       userId: currentUser ? currentUser.id : null,
     },
   });
+
+  if (error || !data.allChallenges) {
+    navigate('/error');
+    return null;
+  }
 
   // Filter away the doors that aren't active yet
   // Ideally these shouldn't be retrieved at all, but whatever
