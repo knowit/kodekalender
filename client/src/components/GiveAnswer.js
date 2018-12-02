@@ -83,7 +83,9 @@ export default ({ doorId }) => {
           <Button
             type="submit"
             onClick={handleSubmit}
-            disabled={!isAuthenticated || value.trim() === ''}
+            disabled={
+              !isAuthenticated || value.trim() === '' || status === 'CHECKING'
+            }
           >
             Avgi svar
           </Button>
