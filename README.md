@@ -8,7 +8,7 @@
 
 ### Forberedelser
 
-- **Om du ikke har Docker:** Last ned [Docker for Mac](https://docs.docker.com/docker-for-mac/) eller [Docker for Windows](https://docs.docker.com/docker-for-windows/install/) (Linux er pr. februar 2018 ikke på [Dockers Desktops liste over støttede plattformer](https://docs.docker.com/install/#supported-platforms))
+- **Om du ikke har Docker:** [Last ned Docker](https://docs.docker.com/install/)
 - **Om du ikke har konto hos Graphcool**: [Registrer deg for Graphcool](https://console.graph.cool/login)
 - **Om du ikke har tilgang til [Programming Ladder-prosjektet i Graphcool](https://console.graph.cool/Programming%20Ladder/schema/types):**. Snakk med Aleksander Bjerkan for å få dette.
 
