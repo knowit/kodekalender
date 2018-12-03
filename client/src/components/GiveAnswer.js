@@ -96,7 +96,7 @@ export default ({ doorId }) => {
             <>
               <p>Noe gikk galt :/</p>
               <p>
-                Kan du har prøvd for mange ganger? Vi begrenser antall forsøk
+                Kanksje du har prøvd for mange ganger? Vi begrenser antall forsøk
                 for å forhindre scripting
               </p>
             </>
