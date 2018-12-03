@@ -1,5 +1,7 @@
 const fromEvent = require('graphcool-lib').fromEvent;
 
+const MAX_NUMBER_OF_ATTEMPTS = 60;
+
 /**
  * Remove all whitespace and lowercase the string
  */
@@ -131,7 +133,9 @@ export default async event => {
 
     const wasCorrect = verifyAnswer(challenge.answer, answer);
 
-    if (wasCorrect && solution == null) {
+    if (solution && solution.attempts >= MAX_NUMBER_OF_ATTEMPTS) {
+      return { error: 'No attempts remaining' };
+    } else if (wasCorrect && solution == null) {
       // No previous entry, answer is correct
       await createSolution(api, challengeId, userId, true);
       return {

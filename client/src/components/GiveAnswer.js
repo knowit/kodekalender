@@ -33,6 +33,7 @@ export default ({ doorId }) => {
 
   const giveAnswer = useMutation(GIVE_ANSWER_MUTATION, {
     variables: { doorId, answer: value },
+    errorPolicy: 'all',
     // We need to update the following queries if we answered correctly
     // Do this instead of updating the cache ourselves
     refetchQueries: ({ data }) =>
@@ -48,9 +49,9 @@ export default ({ doorId }) => {
     event.preventDefault();
     dispatch({ type: 'CHECKING' });
 
-    const { data, error } = await giveAnswer();
+    const { data, errors } = await giveAnswer();
 
-    if (error) {
+    if (errors) {
       dispatch({ type: 'ERROR' });
     } else if (data.checkAnswer.correct) {
       dispatch({
@@ -91,7 +92,15 @@ export default ({ doorId }) => {
           </Button>
         )}
         <div css={{ marginTop: '2rem', fontSize: '1.2rem' }}>
-          {status === 'ERROR' && <span>Noe gikk galt :/</span>}
+          {status === 'ERROR' && (
+            <>
+              <p>Noe gikk galt :/</p>
+              <p>
+                Kan du har prøvd for mange ganger? Vi begrenser antall forsøk
+                for å forhindre scripting
+              </p>
+            </>
+          )}
           {status === 'CHECKING' && <span>Sjekker...</span>}
           {status === 'WRONG' && <WrongAnswer />}
           {status === 'CORRECT' && <CorrectAnswer />}
