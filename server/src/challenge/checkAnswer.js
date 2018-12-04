@@ -1,6 +1,6 @@
 const fromEvent = require('graphcool-lib').fromEvent;
 
-const MAX_NUMBER_OF_ATTEMPTS = 60;
+import { maxAttempts as MAX_NUMBER_OF_ATTEMPTS } from '../../config';
 
 /**
  * Remove all whitespace and lowercase the string
@@ -139,25 +139,25 @@ export default async event => {
       // No previous entry, answer is correct
       await createSolution(api, challengeId, userId, true);
       return {
-        data: { correct: true, discussionUrl: challenge.discussionUrl },
+        data: { correct: true, discussionUrl: challenge.discussionUrl, attempts: 1 },
       };
     } else if (wasCorrect && solution != null) {
       // Previous entry, answer is correct
       await updateSolution(api, solution.id, true, solution.attempts);
       return {
-        data: { correct: true, discussionUrl: challenge.discussionUrl },
+        data: { correct: true, discussionUrl: challenge.discussionUrl, attempts: solution.attempts },
       };
     } else if (!wasCorrect && solution == null) {
       // No previous entry, answer was wrong
       await createSolution(api, challengeId, userId, false);
       return {
-        data: { correct: false },
+        data: { correct: false, attempts: 1 },
       };
     } else if (!wasCorrect && solution != null) {
       // previous entry, answer was wrong
       await updateSolution(api, solution.id, false, solution.attempts);
       return {
-        data: { correct: false },
+        data: { correct: false, attempts: solution.attempts },
       };
     }
 

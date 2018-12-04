@@ -2,6 +2,8 @@ import React, { useContext, useState, useReducer } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
 
+import serverConfig from '../../../server/config';
+
 import LaughingSanta from './LaughingSanta';
 import DroppingSnowman from './DroppingSnowman';
 import Label from './Label';
@@ -13,14 +15,16 @@ import DiscussionLink from './DiscussionLink';
 import LEADERBOARD_QUERY from '../gql/LeaderboardQuery';
 import DOORS_QUERY from '../gql/DoorsQuery';
 
-const initialState = { discussionUrl: null, status: null };
+const initialState = { discussionUrl: null, status: null, remainingAttempts: null };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'CORRECT':
       return { status: action.type, discussionUrl: action.discussionUrl };
+    case 'WRONG':
+      return { ...state, status: action.type, remainingAttempts: action.remainingAttempts };
     default:
-      return { status: action.type };
+      return { ...state, status: action.type };
   }
 }
 
@@ -52,22 +56,23 @@ export default ({ doorId }) => {
     const { data, errors } = await giveAnswer();
 
     if (errors) {
-      dispatch({ type: 'ERROR' });
+      dispatch({ type: 'ERROR', remainingAttempts: (serverConfig.maxAttempts - data.checkAnswer.attempts) });
     } else if (data.checkAnswer.correct) {
       dispatch({
         type: 'CORRECT',
         discussionUrl: data.checkAnswer.discussionUrl,
       });
     } else {
-      dispatch({ type: 'WRONG' });
+      dispatch({ type: 'WRONG', remainingAttempts: (serverConfig.maxAttempts - data.checkAnswer.attempts) });
     }
   }
 
   const status = state.status;
+  const remainingAttemptsText = `(${state.remainingAttempts}/${serverConfig.maxAttempts} forsøk gjenstår)`;
 
   return (
     <form>
-      <Label>Din besvarelse</Label>
+      <Label>Din besvarelse {state.remainingAttempts && remainingAttemptsText}</Label>
       <Input
         aria-label="Answer"
         value={value}
@@ -115,6 +120,7 @@ const GIVE_ANSWER_MUTATION = gql`
     checkAnswer(challengeId: $doorId, answer: $answer) {
       correct
       discussionUrl
+      attempts
     }
   }
 `;
