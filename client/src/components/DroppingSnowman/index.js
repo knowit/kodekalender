@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './styles';
 
+// Original code https://codepen.io/luckyyang/pen/loCBq
+
 const DroppingSnowman = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="286" height="380">
     <g className={styles}>
