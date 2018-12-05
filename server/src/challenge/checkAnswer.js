@@ -133,7 +133,7 @@ export default async event => {
 
     const wasCorrect = verifyAnswer(challenge.answer, answer);
 
-    if (solution && solution.attempts >= MAX_NUMBER_OF_ATTEMPTS) {
+    if (solution && solution.attempts > MAX_NUMBER_OF_ATTEMPTS) {
       return { error: 'No attempts remaining' };
     } else if (wasCorrect && solution == null) {
       // No previous entry, answer is correct
