@@ -2,6 +2,7 @@ type CheckAnswerPayload {
   correct: Boolean!
   discussionUrl: String
   attempts: Int!
+  remainingAttempts: Int
 }
 
 extend type Mutation {

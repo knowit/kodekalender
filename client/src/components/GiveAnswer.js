@@ -2,8 +2,6 @@ import React, { useContext, useState, useReducer } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
 
-import serverConfig from '../../../server/config';
-
 import LaughingSanta from './LaughingSanta';
 import DroppingSnowman from './DroppingSnowman';
 import Label from './Label';
@@ -56,19 +54,19 @@ export default ({ doorId }) => {
     const { data, errors } = await giveAnswer();
 
     if (errors) {
-      dispatch({ type: 'ERROR', remainingAttempts: (serverConfig.maxAttempts - data.checkAnswer.attempts) });
+      dispatch({ type: 'ERROR' });
     } else if (data.checkAnswer.correct) {
       dispatch({
         type: 'CORRECT',
         discussionUrl: data.checkAnswer.discussionUrl,
       });
     } else {
-      dispatch({ type: 'WRONG', remainingAttempts: (serverConfig.maxAttempts - data.checkAnswer.attempts) });
+      dispatch({ type: 'WRONG', remainingAttempts: data.checkAnswer.remainingAttempts });
     }
   }
 
   const status = state.status;
-  const remainingAttemptsText = `(${state.remainingAttempts}/${serverConfig.maxAttempts} forsøk gjenstår)`;
+  const remainingAttemptsText = `(${state.remainingAttempts} forsøk gjenstår)`;
 
   return (
     <form>
@@ -121,6 +119,7 @@ const GIVE_ANSWER_MUTATION = gql`
       correct
       discussionUrl
       attempts
+      remainingAttempts
     }
   }
 `;
