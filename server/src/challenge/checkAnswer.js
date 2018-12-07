@@ -144,8 +144,9 @@ export default async event => {
     } else if (wasCorrect && solution != null) {
       // Previous entry, answer is correct
       await updateSolution(api, solution.id, true, solution.attempts);
+      // Manually increment/decrement solution.attempts since it gets updated through updateSolution.
       return {
-        data: { correct: true, discussionUrl: challenge.discussionUrl, attempts: solution.attempts, remainingAttempts: MAX_NUMBER_OF_ATTEMPTS - solution.attempts },
+        data: { correct: true, discussionUrl: challenge.discussionUrl, attempts: solution.attempts + 1, remainingAttempts: MAX_NUMBER_OF_ATTEMPTS - solution.attempts - 1 },
       };
     } else if (!wasCorrect && solution == null) {
       // No previous entry, answer was wrong
@@ -156,8 +157,9 @@ export default async event => {
     } else if (!wasCorrect && solution != null) {
       // previous entry, answer was wrong
       await updateSolution(api, solution.id, false, solution.attempts);
+      // Manually increment/decrement solution.attempts since it gets updated through updateSolution.
       return {
-        data: { correct: false, attempts: solution.attempts, remainingAttempts: MAX_NUMBER_OF_ATTEMPTS - solution.attempts },
+        data: { correct: false, attempts: solution.attempts + 1, remainingAttempts: MAX_NUMBER_OF_ATTEMPTS - solution.attempts - 1 },
       };
     }
 
