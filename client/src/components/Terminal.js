@@ -83,6 +83,9 @@ const styles = {
       margin-top: 0;
       margin-bottom: 20px;
     }
+    pre {
+      margin-bottom: 20px;
+    }
     hr {
       background-color: rgba(0, 0, 0, 0.12);
       border: 0;
