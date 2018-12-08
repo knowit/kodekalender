@@ -13,14 +13,22 @@ import DiscussionLink from './DiscussionLink';
 import LEADERBOARD_QUERY from '../gql/LeaderboardQuery';
 import DOORS_QUERY from '../gql/DoorsQuery';
 
-const initialState = { discussionUrl: null, status: null, remainingAttempts: null };
+const initialState = {
+  discussionUrl: null,
+  status: null,
+  remainingAttempts: null,
+};
 
 function reducer(state, action) {
   switch (action.type) {
     case 'CORRECT':
       return { status: action.type, discussionUrl: action.discussionUrl };
     case 'WRONG':
-      return { ...state, status: action.type, remainingAttempts: action.remainingAttempts };
+      return {
+        ...state,
+        status: action.type,
+        remainingAttempts: action.remainingAttempts,
+      };
     default:
       return { ...state, status: action.type };
   }
@@ -61,7 +69,10 @@ export default ({ doorId }) => {
         discussionUrl: data.checkAnswer.discussionUrl,
       });
     } else {
-      dispatch({ type: 'WRONG', remainingAttempts: data.checkAnswer.remainingAttempts });
+      dispatch({
+        type: 'WRONG',
+        remainingAttempts: data.checkAnswer.remainingAttempts,
+      });
     }
   }
 
@@ -70,7 +81,10 @@ export default ({ doorId }) => {
 
   return (
     <form>
-      <Label>Din besvarelse {state.remainingAttempts != null && remainingAttemptsText}</Label>
+      <Label>
+        Din besvarelse{' '}
+        {state.remainingAttempts != null && remainingAttemptsText}
+      </Label>
       <Input
         aria-label="Answer"
         value={value}
@@ -99,8 +113,8 @@ export default ({ doorId }) => {
             <>
               <p>Noe gikk galt :/</p>
               <p>
-                Kanskje du har prøvd for mange ganger? Vi begrenser antall forsøk
-                for å forhindre scripting
+                Kanskje du har prøvd for mange ganger? Vi begrenser antall
+                forsøk for å forhindre scripting
               </p>
             </>
           )}
