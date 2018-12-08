@@ -139,25 +139,27 @@ export default async event => {
       // No previous entry, answer is correct
       await createSolution(api, challengeId, userId, true);
       return {
-        data: { correct: true, discussionUrl: challenge.discussionUrl },
+        data: { correct: true, discussionUrl: challenge.discussionUrl, attempts: 1, remainingAttempts: MAX_NUMBER_OF_ATTEMPTS - 1 },
       };
     } else if (wasCorrect && solution != null) {
       // Previous entry, answer is correct
       await updateSolution(api, solution.id, true, solution.attempts);
+      // Manually increment/decrement solution.attempts since it gets updated through updateSolution.
       return {
-        data: { correct: true, discussionUrl: challenge.discussionUrl },
+        data: { correct: true, discussionUrl: challenge.discussionUrl, attempts: solution.attempts + 1, remainingAttempts: MAX_NUMBER_OF_ATTEMPTS - solution.attempts - 1 },
       };
     } else if (!wasCorrect && solution == null) {
       // No previous entry, answer was wrong
       await createSolution(api, challengeId, userId, false);
       return {
-        data: { correct: false },
+        data: { correct: false, attempts: 1, remainingAttempts: MAX_NUMBER_OF_ATTEMPTS - 1 },
       };
     } else if (!wasCorrect && solution != null) {
       // previous entry, answer was wrong
       await updateSolution(api, solution.id, false, solution.attempts);
+      // Manually increment/decrement solution.attempts since it gets updated through updateSolution.
       return {
-        data: { correct: false },
+        data: { correct: false, attempts: solution.attempts + 1, remainingAttempts: MAX_NUMBER_OF_ATTEMPTS - solution.attempts - 1 },
       };
     }
 

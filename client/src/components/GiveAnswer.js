@@ -13,14 +13,16 @@ import DiscussionLink from './DiscussionLink';
 import LEADERBOARD_QUERY from '../gql/LeaderboardQuery';
 import DOORS_QUERY from '../gql/DoorsQuery';
 
-const initialState = { discussionUrl: null, status: null };
+const initialState = { discussionUrl: null, status: null, remainingAttempts: null };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'CORRECT':
       return { status: action.type, discussionUrl: action.discussionUrl };
+    case 'WRONG':
+      return { ...state, status: action.type, remainingAttempts: action.remainingAttempts };
     default:
-      return { status: action.type };
+      return { ...state, status: action.type };
   }
 }
 
@@ -59,15 +61,16 @@ export default ({ doorId }) => {
         discussionUrl: data.checkAnswer.discussionUrl,
       });
     } else {
-      dispatch({ type: 'WRONG' });
+      dispatch({ type: 'WRONG', remainingAttempts: data.checkAnswer.remainingAttempts });
     }
   }
 
   const status = state.status;
+  const remainingAttemptsText = `(${state.remainingAttempts} forsøk gjenstår)`;
 
   return (
     <form>
-      <Label>Din besvarelse</Label>
+      <Label>Din besvarelse {state.remainingAttempts != null && remainingAttemptsText}</Label>
       <Input
         aria-label="Answer"
         value={value}
@@ -115,6 +118,8 @@ const GIVE_ANSWER_MUTATION = gql`
     checkAnswer(challengeId: $doorId, answer: $answer) {
       correct
       discussionUrl
+      attempts
+      remainingAttempts
     }
   }
 `;
