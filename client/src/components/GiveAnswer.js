@@ -132,7 +132,6 @@ const GIVE_ANSWER_MUTATION = gql`
     checkAnswer(challengeId: $doorId, answer: $answer) {
       correct
       discussionUrl
-      attempts
       remainingAttempts
     }
   }
