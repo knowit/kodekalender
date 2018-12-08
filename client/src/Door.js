@@ -51,7 +51,7 @@ const AnonMessage = ({ hasExpired }) => (
   <p css={{ fontSize: '1.2rem', margin: '2.5rem 0', textAlign: 'center' }}>
     {hasExpired
       ? 'Det er for sent å svare på denne oppgaven. Logg deg inn for å se svaret og diskusjonstråden.'
-      : 'Logg deg inn for å avgi svar.'}
+      : 'Logg inn for å avgi svar.'}
   </p>
 );
 
