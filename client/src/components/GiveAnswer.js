@@ -70,7 +70,7 @@ export default ({ doorId }) => {
 
   return (
     <form>
-      <Label>Din besvarelse {state.remainingAttempts !== null && remainingAttemptsText}</Label>
+      <Label>Din besvarelse {state.remainingAttempts != null && remainingAttemptsText}</Label>
       <Input
         aria-label="Answer"
         value={value}
